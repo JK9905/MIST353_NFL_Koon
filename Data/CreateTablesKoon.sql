@@ -30,7 +30,9 @@ TeamName Nvarchar (50) not null,
 TeamCityState Nvarchar(50) not null,
 TeamColors NVARCHAR(50) NOT NULL,
 ConferenceDivisionID INT NOT NULL
-    constraint FK_Team_ConferenceDivison foreign key references ConferenceDivision 
+    constraint FK_Team_ConferenceDivison foreign key references ConferenceDivision (ConferenceDivisionID),
+TeamLogo NVARCHAR(100)
+
 );
 
 
