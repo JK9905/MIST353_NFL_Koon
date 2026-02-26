@@ -6,7 +6,9 @@
 
 --drop database NFL_RDB_Koon;
 
-use MIST353_NFL_RDB_Koon;
+--use MIST353_NFL_RDB_Koon;
+use[mist353-nfl-koon];
+
 
 --drop database to change naming
 --Create tables for the first iteration
