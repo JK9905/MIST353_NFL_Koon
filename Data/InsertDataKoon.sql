@@ -2,7 +2,7 @@
 --insert all the ConferenceDivison data (8 rows)
 --insert team data for AFC North (4 rows)
 -- team IDs',conferences and divisions
-USE MIST353_NFL_RDB_Koon;
+USE [mist353-nfl-koon];
 
 INSERT INTO ConferenceDivision(Conference,Division)
 VALUES ('AFC','East'),

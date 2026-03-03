@@ -1,6 +1,6 @@
 --3 QUERIES
 --1 EACH FOR CONFERENCEDIVISION AND TEAM TABLES, AND 1 JOIN QUERY
-USE MIST353_NFL_RDB_Koon;
+USE [mist353-nfl-koon];
 
 -- Query 1: Select all data from ConferenceDivision table
 SELECT * FROM ConferenceDivision
@@ -30,12 +30,22 @@ create or alter procedure procGetTeamsByConferenceDivision
 AS
 BEGIN
     select TeamName, TeamColors, Conference, Division
-    from team T
+    from Team T
     inner join ConferenceDivision CD
         on CD.ConferenceDivisionID = T.ConferenceDivisionID
     where Conference = isnull(@Conference, Conference)
         and Division = isnull(@Division, Division)
 END
+
+SELECT * from Team;
+Select * from ConferenceDivision;
+/*
+--execute the stored procedure with parameters
+EXEC procGetTeamsByConferenceDivision @Conference = 'AFC', @Division = 'North';
+EXEC procGetTeamsByConferenceDivision @Conference = 'AFC', @Division = NULL;
+EXEC procGetTeamsByConferenceDivision @Conference = NULL, @Division = 'North';
+EXEC procGetTeamsByConferenceDivision @Conference = NULL, @Division = NULL;
+*/
 
 
 GO
@@ -43,19 +53,22 @@ GO
 
 
 
-create or alter procedure findallteamsbymyteamname
+create or alter procedure procfindallteamsbymyteamname
 (
     @TeamName NVARCHAR(50)
 )
 AS
-BEGIN
-declare @myteamname nvarchar(50) = 'Steelers';
 
-    SELECT * FROM Team
+BEGIN
+
 
 SELECT OtherTeam.TeamName
 FROM Team MyTeam INNER JOIN Team OtherTeam
 ON MyTeam.ConferenceDivisionID = OtherTeam.ConferenceDivisionID 
-WHERE TeamName = @myteamname AND OtherTeam.TeamName != @TeamName;
+WHERE MyTeam.TeamName = @TeamName AND OtherTeam.TeamName != @TeamName;
 
 END
+/*
+--execute the stored procedure with parameters
+EXEC procfindallteamsbymyteamname @TeamName = 'Pittsburgh Steelers';
+*/
