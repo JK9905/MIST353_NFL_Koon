@@ -55,14 +55,17 @@ GO
 
 
 
-create or alter procedure procfindallteamsbymyteamname
+create or alter procedure procGetOtherTeamsInSameConferenceDivisionAsSpecifiedTeam
 (
     @TeamName NVARCHAR(50)
 )
 AS
 
 BEGIN
-
+SELECT OtherTeam.TeamName
+FROM Team MyTeam INNER JOIN Team OtherTeam
+ON MyTeam.ConferenceDivisionID = OtherTeam.ConferenceDivisionID 
+WHERE MyTeam.TeamName = @TeamName AND OtherTeam.TeamName != @TeamName;
 
 SELECT OtherTeam.TeamName
 FROM Team MyTeam INNER JOIN Team OtherTeam
@@ -72,5 +75,5 @@ WHERE MyTeam.TeamName = @TeamName AND OtherTeam.TeamName != @TeamName;
 END
 /*
 --execute the stored procedure with parameters
-EXEC procfindallteamsbymyteamname @TeamName = 'Pittsburgh Steelers';
+EXEC procGetOtherTeamsInSameConferenceDivisionAsSpecifiedTeam @TeamName = 'Pittsburgh Steelers';
 */

@@ -7,7 +7,7 @@ def get_teams_by_conference_division(
     #with get_db_connection() as conn
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("{call procGetTeamsByConferenceDivision (@Conference = ?, @Division = ?)}", (conference, division))
+    cursor.execute("{call procGetTeamsByConferenceDivision (?, ?)}", (conference, division))
     rows = cursor.fetchall()
     conn.close()
 
@@ -22,4 +22,4 @@ def get_teams_by_conference_division(
         for row in rows
     ]
 
-    return results
+    return {"data" : results}
