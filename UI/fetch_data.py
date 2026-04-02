@@ -15,4 +15,4 @@ def fetch_data(endpoint: str, input_params: dict, method: str = "GET"):
          return df
         else:
             st.error(f"Error fetching data: {response.status_code} - {response.text}")
-            return pd.DataFrame()  # Return empty DataFrame on error
+            return None
