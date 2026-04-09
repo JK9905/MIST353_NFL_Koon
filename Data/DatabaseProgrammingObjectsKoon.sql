@@ -108,8 +108,44 @@ END
     --select * from AppUser;
 
 --Find fan teams for a specific user
---/*GO
---Create or alter procedure procGetFanTeamsForUser
---(
---    @AppUserID INT
---)
+/*GO
+create or alter procedure procGetTeamsForSpecifiedFan
+(
+    @NFLFanID INT
+)
+AS
+BEGIN
+    SELECT FT.FanTeamID,FT.PrimaryTeam, CD.CONFERENCE, CD.DIVISION
+    from NFLFan F
+        inner join FanTeam FT
+        on F.NFLFanID = FT.NFLFanID
+        --on F.NFLFanID = T.TeamID
+        INNER JOIN Team T
+        on FT.TeamID = T.TeamID
+        inner join ConferenceDivision CD
+        on T.ConferenceDivisionID = CD.ConferenceDivisionID
+    where F.NFLFanID = @NFLFanID
+END;*/
+--execute the stored procedure with parameters
+--EXEC procGetTeamsForSpecifiedFan @NFLFanID = 1;
+--EXEC procGetTeamsForSpecifiedFan @NFLFanID = 2;
+
+
+GO
+CREATE OR ALTER PROCEDURE procGetTeamsForSpecifiedFan
+(
+    @NFLFanID INT
+)
+AS
+BEGIN
+    SELECT FT.PrimaryTeam, T.TeamName
+    FROM NFLFan F
+        INNER JOIN FanTeam FT 
+        ON F.NFLFanID = FT.NFLFanID
+        INNER JOIN Team T 
+        ON FT.TeamID = T.TeamID
+    WHERE F.NFLFanID = @NFLFanID
+END;
+
+--execute the stored procedure with parameters
+--EXEC procGetTeamsForSpecifiedFan @NFLFanID = 2;
