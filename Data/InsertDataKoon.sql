@@ -13,7 +13,7 @@ VALUES ('AFC','East'),
        ('NFC','North'),
        ('NFC','South'),
        ('NFC','West');
-SELECT * FROM ConferenceDivision
+--SELECT * FROM ConferenceDivision
 -- Team information for AFC North
 INSERT INTO Team(TeamName,TeamCityState,TeamColors,ConferenceDivisionID,TeamLogo)
 VALUES ('Baltimore Ravens','Baltimore, MD','Purple, Black, Metallic Gold',2,'C:\Users\koonj\MIST 353\MIST353_NFL_Koon\Team Logos\Ravens.png'),
@@ -55,5 +55,52 @@ VALUES ('Baltimore Ravens','Baltimore, MD','Purple, Black, Metallic Gold',2,'C:\
        ('Los Angeles Rams','Los Angeles, CA','Rams Royal, Solor Gold, White',8,'C:\Users\koonj\MIST 353\MIST353_NFL_Koon\Team Logos\Rams.png'),
        ('San Francisco 49ers','San Francisco, CA','Scarlet, Gold, White',8,'C:\Users\koonj\MIST 353\MIST353_NFL_Koon\Team Logos\49ers.png'),
        ('Seattle Seahawks','Seattle, WA','College Navy, Action Green, Wolf Grey',8,'C:\Users\koonj\MIST 353\MIST353_NFL_Koon\Team Logos\Seahawks.png');
+GO
+       --SELECT * FROM Team ORDER BY TeamID;
 
-       SELECT * FROM Team ORDER BY TeamID;
+GO
+       
+insert into AppUser (Firstname, Lastname, Email, Phone, PasswordHash, UserRole)
+VALUES
+('Tom', 'Brady', 'tom.brady@example.com', '555-1234', 0x01, N'NFLFan'),
+('Aaron', 'Rodgers', 'aaron.rodgers@example.com', '555-9012', 0x01, N'NFLFan'),
+('Drew', 'Brees', 'drew.brees@example.com', '555-2222', 0x01, N'NFLFan'),
+('Patrick', 'Mahomes', 'patrick.mahomes@example.com', '555-7890', 0x01, N'NFLFan'),
+
+('Bill', 'Belichick', 'bill.belichick@example.com', '555-5678', 0x01, N'NFLAdmin'),
+('Sean', 'McVay', 'sean.mcay@example.com', '555-3456', 0x01, N'NFLAdmin'),
+('Mike', 'Tomlin', 'mike.tomlin@example.com', '555-1111', 0x01, N'NFLAdmin'),
+('Andy', 'Reid', 'andy.reid@example.com', '555-3333', 0x01, N'NFLAdmin');
+
+GO
+
+insert into NFLFan (NFLFanID)
+VALUES
+(1),
+(2),
+(3),
+(4);
+
+GO
+
+insert into NFLAdmin (NFLAdminID)
+VALUES
+(5),
+(6),
+(7),
+(8);
+
+GO
+
+--select * from Team;
+
+insert into FanTeam (NFLFanID, TeamID, PrimaryTeam)
+VALUES
+(1, 11, 1),
+(1, 24, 0), -- Tom Brady is a fan of New England Patriots and Tampa Bay Buccaneers, but Patriots is his primary team
+(2, 19, 1), 
+(2, 12, 0),
+(2, 4, 0),-- Aaron Rodgers is a fan of Green Bay Packers, New York Jets, and Pittsburgh Steelers, but Packers is his primary team
+(3, 3, 1), -- Drew Brees is a fan New Orleans Saints (primary) and Los Angeles Chargers
+(3, 16, 0),
+(4, 14, 1); -- Patrick Mahomes is a fan of Kansas City Chiefs (primary)

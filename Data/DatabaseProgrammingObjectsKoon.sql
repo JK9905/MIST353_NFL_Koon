@@ -5,7 +5,7 @@
 USE [mist353-nfl-koon];
 
 -- Query 1: Select all data from ConferenceDivision table
-SELECT * FROM ConferenceDivision
+/*SELECT * FROM ConferenceDivision
 WHERE Conference = 'NFC'
 AND Division = 'South';
 
@@ -19,7 +19,7 @@ SELECT TeamName, TeamCityState, TeamColors, Conference, Division
 FROM Team t
 JOIN ConferenceDivision cd ON t.ConferenceDivisionID = cd.ConferenceDivisionID
 WHERE Conference = 'AFC'
-AND Division = 'North';
+AND Division = 'North';*/
 
 -- Stored Procedure
 GO
@@ -39,8 +39,8 @@ BEGIN
         and Division = isnull(@Division, Division)
 END
 
-SELECT * from Team;
-Select * from ConferenceDivision;
+--SELECT * from Team;
+--Select * from ConferenceDivision;
 /*
 --execute the stored procedure with parameters
 EXEC procGetTeamsByConferenceDivision @Conference = 'AFC', @Division = 'North';
@@ -77,3 +77,39 @@ END
 --execute the stored procedure with parameters
 EXEC procGetOtherTeamsInSameConferenceDivisionAsSpecifiedTeam @TeamName = 'Pittsburgh Steelers';
 */
+GO
+
+create or alter procedure procValidateUser
+
+(
+
+  @Email NVARCHAR(100),
+
+  @PasswordHash NVARCHAR(200)
+
+)
+
+AS
+
+BEGIN
+
+  select AppUserID, Firstname + ' ' + Lastname as Fullname, UserRole
+
+  from AppUser
+
+  where Email = @Email and 
+
+  PasswordHash = Convert(VARBINARY(200), @PasswordHash, 1);
+
+END
+
+    -- EXECUTE THE STORED PROCEDURE WITH PARAMETERS
+    -- EXEC procValidateUser;
+    --select * from AppUser;
+
+--Find fan teams for a specific user
+--/*GO
+--Create or alter procedure procGetFanTeamsForUser
+--(
+--    @AppUserID INT
+--)
