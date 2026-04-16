@@ -149,3 +149,19 @@ END;
 
 --execute the stored procedure with parameters
 --EXEC procGetTeamsForSpecifiedFan @NFLFanID = 2;
+
+--Create or alter procedure for finding teams by team color
+/*GO
+CREATE OR ALTER PROCEDURE procGetTeamsByTeamColor
+(
+    @TeamColor NVARCHAR(50)
+)
+
+AS
+BEGIN
+    SELECT TeamName, TeamColors
+    FROM Team
+    WHERE TeamColors LIKE '%' + @TeamColor + '%' 
+END */
+--execute the stored procedure with parameters
+--EXEC procGetTeamsByTeamColor @TeamColor = 'Black';

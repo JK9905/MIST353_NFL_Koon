@@ -9,6 +9,7 @@ def get_teams_for_specified_fan_ui():
 
     if st.button("Fetch Teams"):
         input_params = {}
+        #nfl_fan_id = 
         input_params["nfl_fan_id"] = nfl_fan_id
         #define fetch_data function and call with input_params
         df = fetch_data ("get_teams_for_specified_fan/", input_params)
