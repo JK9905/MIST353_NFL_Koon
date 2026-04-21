@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import pandas as pd
 
-FASTAPI_URL = "http://localhost:8000"
+FASTAPI_URL = "http://mist353-api-koon.azurewebsites.net"
 
 def fetch_data(endpoint: str, input_params: dict, method: str = "GET"):
     if method == "GET":
@@ -14,5 +14,5 @@ def fetch_data(endpoint: str, input_params: dict, method: str = "GET"):
          df = pd.DataFrame(rows)
          return df
         else:
-            st.error(f"Error fetching data: {response.status_code} - {response.text}")
+            st.error(f"Error fetching data: {response.status_code}")
             return None
