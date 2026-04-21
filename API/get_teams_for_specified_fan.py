@@ -9,7 +9,7 @@ def get_teams_for_specified_fan(
     conn = get_db_connection()
     cursor = conn.cursor(as_dict=True)
     #cursor.execute("{call procGetTeamsForSpecifiedFan (?)}", (nfl_fan_id,))
-    cursor.callproc("procGetTeamsForSpecifiedFan", (nfl_fan_id,))
+    cursor.execute("exec procGetTeamsForSpecifiedFan %s", (nfl_fan_id,))
     rows = cursor.fetchall()
     conn.close()
 
