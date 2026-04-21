@@ -6,8 +6,6 @@ def get_teams_for_specified_fan_ui():
     fan_name = st.session_state.app_user_fullname
     st.header(f"Get Teams associated with {fan_name}")
 
-    nfl_fan_id = st.number_input("Enter NFL Fan ID", min_value=1, step=1)
-
     if st.button("Fetch Teams"):
         input_params = {}
         nfl_fan_id = st.text_input("NFL Fan ID", value=st.session_state.app_user_id, disabled=True)
