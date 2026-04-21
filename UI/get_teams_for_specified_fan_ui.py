@@ -9,13 +9,15 @@ def get_teams_for_specified_fan_ui():
 
     if st.button("Fetch Teams"):
         input_params = {}
-        #nfl_fan_id = 
+        fan_name = st.session_state.app_user_fullname
+        nfl_fan_id = st.text_input("NFL Fan ID", value=st.session_state.app_user_id, disabled=True)
         input_params["nfl_fan_id"] = nfl_fan_id
+        
         #define fetch_data function and call with input_params
         df = fetch_data ("get_teams_for_specified_fan/", input_params)
 
         if df is not None and not df.empty:
-            st.subheader(f"Teams for NFL Fan ID {nfl_fan_id}:")
+            st.subheader(f"Teams associated with {fan_name} (ID: {nfl_fan_id}):")
             st.dataframe(df, use_container_width=True, hide_index=True)
         else:
-            st.info(f"No teams found for NFL Fan ID {nfl_fan_id}. Please adjust your selection and try again.")
+            st.info(f"No teams found for {fan_name} (ID: {nfl_fan_id}). Please adjust your selection and try again.")
