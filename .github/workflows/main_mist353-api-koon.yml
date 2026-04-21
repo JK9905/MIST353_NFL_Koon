@@ -9,8 +9,8 @@ on:
     branches:
       - main
     paths:
-      -'API/**'
-      -'requirements.txt'
+      - 'API/**'
+      - 'requirements.txt'
   workflow_dispatch:
 
 jobs:
