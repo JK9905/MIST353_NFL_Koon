@@ -13,18 +13,48 @@ use[mist353-nfl-koon];
 
 --drop database to change naming
 --Create tables for the first iteration
-if (OBJECT_ID ('FanTeam') IS NOT NULL)
+/*if (OBJECT_ID ('FanTeam') IS NOT NULL)
     DROP TABLE FanTeam;
 IF (OBJECT_ID ('NFLFan') IS NOT NULL)
     DROP TABLE NFLFan;
+IF (OBJECT_ID ('AdminChangesTracker') IS NOT NULL)
+    DROP TABLE AdminChangesTracker;
 IF (OBJECT_ID ('NFLAdmin') IS NOT NULL)
     DROP TABLE NFLAdmin;
+IF (OBJECT_ID ('Game') IS NOT NULL)
+    DROP TABLE Game;
+IF (OBJECT_ID('TeamStadium') IS NOT NULL)
+    DROP TABLE TeamStadium;
+IF (OBJECT_ID('Stadium') IS NOT NULL)
+    DROP TABLE Stadium;
 if (OBJECT_ID('Team') IS NOT NULL)
     DROP TABLE Team;
 if (OBJECT_ID('ConferenceDivision') IS NOT NULL)
     DROP TABLE ConferenceDivision;
 if (OBJECT_ID('AppUser') IS NOT NULL)
-    DROP TABLE AppUser;
+    DROP TABLE AppUser;*/
+
+
+if(OBJECT_ID('AdminChangesTracker') is not null)
+    drop table AdminChangesTracker;
+if(OBJECT_ID('TeamStadium') is not null)
+    drop table TeamStadium;
+if(OBJECT_ID('Game') is not null)
+    drop table Game;
+if(OBJECT_ID('Stadium') is not null)
+    drop table Stadium;
+if(OBJECT_ID('FanTeam') is not null)
+    drop table FanTeam;
+if(OBJECT_ID('Team') is not null)
+    drop table Team;
+if(OBJECT_ID('ConferenceDivision') is not null)
+    drop table ConferenceDivision;
+if(OBJECT_ID('NFLAdmin') is not null)
+    drop table NFLAdmin;
+if(OBJECT_ID('NFLFan') is not null)
+    drop table NFLFan;
+if(OBJECT_ID('AppUser') is not null)
+    drop table AppUser;
 
 go
 CREATE TABLE ConferenceDivision(
@@ -100,3 +130,65 @@ create table FanTeam(
     PrimaryTeam BIT NOT NULL
 );
 
+
+GO
+
+create table Stadium(
+    StadiumID int identity(1,1)
+        constraint PK_Stadium primary key,
+    StadiumName NVARCHAR(100) NOT NULL,
+    StadiumCityState NVARCHAR(100) NOT NULL,
+    Capacity INT NOT NULL
+);
+
+GO
+
+create table TeamStadium(
+    TeamStadiumID int identity(1,1)
+        constraint PK_TeamStadium primary key,
+    TeamID int not null
+        constraint FK_TeamStadium_Team foreign key references Team(TeamID),
+    StadiumID int not null
+        constraint FK_TeamStadium_Stadium foreign key references Stadium(StadiumID),
+    StartYear INT NOT NULL,
+    EndYear INT NULL,
+    constraint UK_TeamStadium UNIQUE (TeamID, StadiumID, StartYear)
+);
+
+GO
+
+create table Game(
+    GameID INT identity(1,1)
+        constraint PK_Game primary key,
+    GameRound NVARCHAR(50) NOT NULL,
+       constraint CK_GameRound CHECK (GameRound IN ('Wild Card', 'Divisional', 'Conference', 'Super Bowl')),
+    GameDate DATE NOT NULL,
+    GameStartTime TIME NOT NULL,
+    HomeTeamID INT NOT NULL
+        constraint FK_Game_HomeTeam foreign key references Team(TeamID),
+    AwayTeamID INT NOT NULL
+        constraint FK_Game_AwayTeam foreign key references Team(TeamID),
+    StadiumID INT NOT NULL
+        constraint FK_Game_Stadium foreign key references Stadium(StadiumID),
+    HomeTeamScore INT NULL,
+    AwayTeamScore INT NULL,
+    WinningTeamID INT NULL
+        constraint FK_Game_WinningTeam foreign key references Team(TeamID),
+    constraint CK_Game_Teams CHECK (HomeTeamID != AwayTeamID),
+    constraint UK_Game UNIQUE (HomeTeamID, AwayTeamID, GameDate)
+);
+
+GO
+
+create table AdminChangesTracker (
+    AdminChangesTrackerID INT identity(1,1)
+        constraint PK_AdminChangesTracker primary key,
+    NFLAdminID INT NOT NULL
+        constraint FK_AdminChangesTracker_NFLAdmin foreign key references NFLAdmin(NFLAdminID),
+    GameID INT NOT NULL
+        constraint FK_AdminChangesTracker_Game foreign key references Game(GameID),
+    ChangeDateTime DATETIME NOT NULL DEFAULT GETDATE(),
+    ChangeType NVARCHAR(50) NOT NULL
+        constraint CK_AdminChangesTracker_ChangeType CHECK (ChangeType IN (N'Insert', N'Update', N'Delete')),
+    ChangeDescription NVARCHAR(500) NOT NULL
+);
