@@ -10,31 +10,6 @@
 --use MIST353_NFL_RDB_Koon;*/
 use[mist353-nfl-koon];
 
-
---drop database to change naming
---Create tables for the first iteration
-/*if (OBJECT_ID ('FanTeam') IS NOT NULL)
-    DROP TABLE FanTeam;
-IF (OBJECT_ID ('NFLFan') IS NOT NULL)
-    DROP TABLE NFLFan;
-IF (OBJECT_ID ('AdminChangesTracker') IS NOT NULL)
-    DROP TABLE AdminChangesTracker;
-IF (OBJECT_ID ('NFLAdmin') IS NOT NULL)
-    DROP TABLE NFLAdmin;
-IF (OBJECT_ID ('Game') IS NOT NULL)
-    DROP TABLE Game;
-IF (OBJECT_ID('TeamStadium') IS NOT NULL)
-    DROP TABLE TeamStadium;
-IF (OBJECT_ID('Stadium') IS NOT NULL)
-    DROP TABLE Stadium;
-if (OBJECT_ID('Team') IS NOT NULL)
-    DROP TABLE Team;
-if (OBJECT_ID('ConferenceDivision') IS NOT NULL)
-    DROP TABLE ConferenceDivision;
-if (OBJECT_ID('AppUser') IS NOT NULL)
-    DROP TABLE AppUser;*/
-
-
 if(OBJECT_ID('AdminChangesTracker') is not null)
     drop table AdminChangesTracker;
 if(OBJECT_ID('TeamStadium') is not null)
