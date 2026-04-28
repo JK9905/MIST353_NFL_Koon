@@ -318,8 +318,7 @@ GO*/
 
 
 
--- NFC Championship: (5) LA Rams at (1) Seattle Seahawks
--- Seahawks win 31-27
+
 /*
     @GameRound = 'Conference',
     @HomeTeamID = 32, -- Seattle Seahawks
@@ -357,3 +356,14 @@ GO*/
     @NFLAdminID = 8; -- Mike Tomlin
 
 */
+
+/*EXEC procEnterScores
+    @GameID = 12,
+    @HomeTeamScore = 29,
+    @AwayTeamScore = 13,
+    @NFLAdminID = 8,
+    @WinningTeamID = 13; -- Denver Broncos
+
+SELECT * from Game;*/
+
+SELECT * from AdminChangesTracker;

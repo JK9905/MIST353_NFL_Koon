@@ -187,6 +187,30 @@ BEGIN
     VALUES (@HomeTeamID, @AwayTeamID, @GameRound, @GameDate, @GameStartTime, @StadiumID);
 END
 
+-- procEnterScores parameters:
+--@GameID INT,
+--@HomeTeamScore INT,
+--@AwayTeamScore INT,
+--@NFLAdminID INT
+GO
+create or alter procedure procEnterScores
+(
+    @GameID INT,
+    @HomeTeamScore INT,
+    @AwayTeamScore INT,
+    @NFLAdminID INT,
+    @WinningTeamID INT
+)
+AS
+BEGIN
+    --Store the NFLAdminID in context for trigger
+    declare @context varbinary(128) = cast(@NFLAdminID as varbinary(128));
+    SET context_info @context;
+
+    UPDATE Game
+    SET HomeTeamScore = @HomeTeamScore, AwayTeamScore = @AwayTeamScore, WinningTeamID = @WinningTeamID
+    WHERE GameID = @GameID;
+END
 
 /*GameRound: 'Wild Card', HomeTeamID: 22, AwayTeamID: 30, GameDate: '2026-01-10', GameStartTime: '16:30', StadiumID: 22, 
 NFLAdminID for scheduling: 5 (Bill Belichick)
@@ -263,6 +287,39 @@ BEGIN
     + ' for ' + @GameRound + ' round between ' + @HomeTeamName + ' and ' + @AwayTeamName
     + ' on ' + cast(@GameDate as nvarchar(50)) + ' at ' + cast(@GameStartTime as nvarchar(50)) + 'in stadium with ID ' + cast(@StadiumID as nvarchar(50)) + '.';
     ;
+
+    insert into AdminChangesTracker (NFLAdminID, GameID, ChangeType, ChangeDescription)
+    values (@NFLAdminID, @GameID, @ChangeType, @ChangeDescription);
+END
+GO
+create or alter trigger trgTrackChangesOnEnteringScores
+ON Game
+after update
+as
+BEGIN
+    DECLARE @NFLAdminID INT;
+    DECLARE @GameID INT;
+    DECLARE @ChangeType NVARCHAR(50);
+    DECLARE @ChangeDescription NVARCHAR(500);
+    DECLARE @HomeTeamScore INT;
+    DECLARE @AwayTeamScore INT;
+    DECLARE @AdminFullName NVARCHAR(100);
+    DECLARE @WinningTeamID INT;
+
+    --get NFLAdminID from context
+    SET @NFLAdminID = convert(int, convert(binary(4),context_info()));
+
+    --get GameID and updated scores from inserted record
+    SELECT @GameID = GameID, @HomeTeamScore = HomeTeamScore, @AwayTeamScore = AwayTeamScore, @WinningTeamID = WinningTeamID
+    from inserted;
+    --get admin full name
+    SELECT @AdminFullName = Firstname + ' ' + Lastname from AppUser where AppUserID = @NFLAdminID;
+    --SELECT @WinningTeamID = TeamID from Team where TeamID = @WinningTeamID;
+
+    SET @ChangeType = 'Update';
+    SET @ChangeDescription = 'Scores updated by ' + @AdminFullName + ' for GameID ' + 
+    cast(@GameID as nvarchar(50)) + ': Home=' + cast(@HomeTeamScore as nvarchar(50)) + ', 
+    Away=' + cast(@AwayTeamScore as nvarchar(50)) + ', WinningTeam=' + cast(@WinningTeamID as nvarchar(50)) + '.';
 
     insert into AdminChangesTracker (NFLAdminID, GameID, ChangeType, ChangeDescription)
     values (@NFLAdminID, @GameID, @ChangeType, @ChangeDescription);
