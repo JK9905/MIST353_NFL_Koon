@@ -366,4 +366,3 @@ GO*/
 
 SELECT * from Game;*/
 
-SELECT * from AdminChangesTracker;

@@ -172,8 +172,8 @@ create or alter procedure procScheduleGame
     @HomeTeamID INT,
     @AwayTeamID INT,
     @GameRound NVARCHAR(50),
-    @GameDate DATETIME,
-    @GameStartTime DATETIME,
+    @GameDate DATE,
+    @GameStartTime TIME,
     @StadiumID INT,
     @NFLAdminID INT -- admin who logged in and is scheduling game
 )
@@ -291,6 +291,11 @@ BEGIN
     insert into AdminChangesTracker (NFLAdminID, GameID, ChangeType, ChangeDescription)
     values (@NFLAdminID, @GameID, @ChangeType, @ChangeDescription);
 END
+
+
+
+
+
 GO
 create or alter trigger trgTrackChangesOnEnteringScores
 ON Game
@@ -324,3 +329,5 @@ BEGIN
     insert into AdminChangesTracker (NFLAdminID, GameID, ChangeType, ChangeDescription)
     values (@NFLAdminID, @GameID, @ChangeType, @ChangeDescription);
 END
+
+SELECT NFLAdminID FROM AdminChangesTracker;

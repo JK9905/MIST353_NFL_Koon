@@ -3,16 +3,29 @@ import requests
 import pandas as pd
 
 FASTAPI_URL = "http://mist353-api-koon.azurewebsites.net"
+#"http://localhost:8000" "http://mist353-api-koon.azurewebsites.net"
 
 def fetch_data(endpoint: str, input_params: dict, method: str = "GET"):
     if method == "GET":
         response = requests.get(f"{FASTAPI_URL}/{endpoint}", params=input_params)
+    elif method == "POST":
+        response = requests.post(f"{FASTAPI_URL}/{endpoint}", json=input_params)
 
-        if response.status_code == 200:
-         payload = response.json()
-         rows = payload.get("data", [])
-         df = pd.DataFrame(rows)
-         return df
-        else:
+    if response.status_code == 200:
+            payload = response.json()
+            rows = payload.get("data", [])
+            df = pd.DataFrame(rows)
+            return df
+    else:
             st.error(f"Error fetching data: {response.status_code}")
             return None
+
+
+def post_data(endpoint: str, input_params: dict, method: str = "POST")-> dict:
+    if method == "POST":
+        response = requests.post(f"{FASTAPI_URL}/{endpoint}", json=input_params)
+    if response.status_code == 200:
+            return response.json()
+    else:
+        st.error(f"Error posting data: {response.status_code}")
+        return {"Status": response.status_code}
