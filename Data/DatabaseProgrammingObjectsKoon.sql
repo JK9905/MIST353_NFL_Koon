@@ -330,4 +330,47 @@ BEGIN
     values (@NFLAdminID, @GameID, @ChangeType, @ChangeDescription);
 END
 
+GO
+create or alter procedure procGetAllChangesMadeBySpecifiedAdmin
+
+(
+
+  @NFLAdminID INT
+
+)
+
+as
+
+begin
+
+  select ACT.ChangeDateTime, ACT.ChangeType, ACT.ChangeDescription,
+
+  G.GameRound, G.GameDate, G.GameStartTime,
+
+  HT.TeamName as HomeTeam, AT.TeamName as AwayTeam, S.StadiumName
+
+  from AdminChangesTracker ACT inner join Game G
+
+    on ACT.GameID = G.GameID
+
+    inner join Team HT
+
+    on G.HomeTeamID = HT.TeamID
+
+    inner join Team AT
+
+    on G.AwayTeamID = AT.TeamID
+
+    inner join Stadium S
+
+    on G.StadiumID = S.StadiumID
+
+  where ACT.NFLAdminID = @NFLAdminID
+
+  order by ACT.ChangeDateTime desc;
+
+end
+
 SELECT NFLAdminID FROM AdminChangesTracker;
+
+-- execute procGetAllChangesMadeBySpecifiedAdmin @NFLAdminID = 5; -- Bill Belichick

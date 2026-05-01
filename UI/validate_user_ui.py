@@ -1,5 +1,5 @@
 import streamlit as st
-from fetch_data import fetch_data
+from fetch_data import get_data
 
 def validate_user_ui():
 
@@ -18,12 +18,13 @@ def validate_user_ui():
             input_params["password_hash"] = password_hash.strip()
        
         #define fetch_data function and call with input_params
-        df = fetch_data ("validate_user/", input_params)
+        df = get_data ("validate_user/", input_params)
 
         if df is not None and not df.empty:
             st.subheader(f"User {email} is valid:")
             st.dataframe(df, use_container_width=True, hide_index=True)
             st.session_state.app_user_id = df["AppUserID"].values[0]
             st.session_state.app_user_fullname = df["Fullname"].values[0]
+            st.session_state.app_user_role = df["UserRole"].values[0]
         else:
             st.info(f"User {email} is not valid. Please try again.")

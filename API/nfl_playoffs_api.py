@@ -6,6 +6,9 @@ from validate_user import validate_user
 from get_teams_for_specified_fan import get_teams_for_specified_fan
 import pymssql
 from schedule_game import schedule_game
+from get_all_stadiums import get_all_stadiums
+from get_all_teams import get_all_teams
+from get_all_changes_made_by_specified_admin import get_all_changes_made_by_specified_admin
 from datetime import date,time
 
 app = FastAPI()
@@ -28,20 +31,32 @@ def get_teams_for_specified_fan_api(nfl_fan_id: int):
 
 @app.post("/schedule_game/")
 def schedule_game_api(
-        home_team_id : int,
-        away_team_id : int,
-        game_round : str,
-        game_date : date,
-        game_start_time : time,
-        stadium_id : int,
-        nfl_admin_id : int
+        HomeTeamID : int,
+        AwayTeamID : int,
+        GameRound : str,
+        GameDate : date,
+        GameStartTime : time,
+        StadiumID : int,
+        NFLAdminID : int
     ):
     return schedule_game(
-        home_team_id=home_team_id,
-        away_team_id=away_team_id,
-        game_round=game_round,
-        game_date=game_date,
-        game_start_time=game_start_time,
-        stadium_id=stadium_id,
-        nfl_admin_id=nfl_admin_id
+        HomeTeamID=HomeTeamID,
+        AwayTeamID=AwayTeamID,
+        GameRound=GameRound,
+        GameDate=GameDate,
+        GameStartTime=GameStartTime,
+        StadiumID=StadiumID,
+        NFLAdminID=NFLAdminID
     )
+
+@app.get("/get_all_stadiums/")
+def get_all_stadiums_api():
+    return get_all_stadiums()
+
+@app.get("/get_all_teams/")
+def get_all_teams_api():
+    return get_all_teams()
+
+@app.get("/get_all_changes_made_by_specified_admin/")
+def get_all_changes_made_by_specified_admin_api(nfl_admin_id: int):
+    return get_all_changes_made_by_specified_admin(nfl_admin_id=nfl_admin_id)

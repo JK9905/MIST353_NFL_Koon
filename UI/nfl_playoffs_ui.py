@@ -4,6 +4,7 @@ from get_teams_in_same_conference_and_division_as_specified_team_ui import get_t
 from validate_user_ui import validate_user_ui
 from get_teams_for_specified_fan_ui import get_teams_for_specified_fan_ui
 from schedule_game_ui import schedule_game_ui
+from get_all_changes_made_by_specified_admin_ui import get_all_changes_made_by_specified_admin_ui
 
 
 st.title("NFL Playoffs App")
@@ -24,7 +25,8 @@ with st.sidebar:
 
     "Select a functionality:",
 
-    ["Get Teams by Conference and Division", "Get Teams in Same Conference and Division as Specified Team", "Validate User", "Get Teams for Specified Fan", "Schedule Game"]
+    ["Get Teams by Conference and Division", "Get Teams in Same Conference and Division as Specified Team", "Validate User", "Get Teams for Specified Fan", 
+     "Schedule Game", "Get All Changes Made by Specified Admin"]
 
   )
 
@@ -47,5 +49,17 @@ elif api_endpoint == "Get Teams for Specified Fan":
    get_teams_for_specified_fan_ui()
 
 elif api_endpoint == "Schedule Game":
+   if "app_user_id" not in st.session_state:
+       st.warning("Please validate your user credentials before scheduling a game.")
+   elif st.session_state.app_user_role != "NFLAdmin":
+       st.warning("Only NFL Admins can view schedule game.")
+   else:
+       schedule_game_ui()
 
-   schedule_game_ui()
+elif api_endpoint == "Get All Changes Made by Specified Admin":
+   if "app_user_id" not in st.session_state:
+       st.warning("Please validate your user credentials before viewing changes made by admin.")
+   elif st.session_state.app_user_role != "NFLAdmin":
+       st.warning("Only NFL Admins can view changes made by admin.")
+   else:
+       get_all_changes_made_by_specified_admin_ui()

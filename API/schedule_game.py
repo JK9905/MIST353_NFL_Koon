@@ -4,20 +4,20 @@ import pymssql
 
 
 def schedule_game(
-        home_team_id : int,
-        away_team_id : int,
-        game_round : str,
-        game_date : date,
-        game_start_time : time,
-        stadium_id : int,
-        nfl_admin_id : int
+        HomeTeamID : int,
+        AwayTeamID : int,
+        GameRound : str,
+        GameDate : date,
+        GameStartTime : time,
+        StadiumID : int,
+        NFLAdminID : int
     ):
     
     conn = get_db_connection()
     cursor = conn.cursor(as_dict=True)
 
     try: #tries a procedure and if the procedure fails, it will catch the exception
-        cursor.execute("exec procScheduleGame %s, %s, %s, %s, %s, %s, %s", (home_team_id, away_team_id, game_round, game_date, game_start_time, stadium_id, nfl_admin_id))
+        cursor.execute("exec procScheduleGame %s, %s, %s, %s, %s, %s, %s", (HomeTeamID, AwayTeamID, GameRound, GameDate, GameStartTime, StadiumID, NFLAdminID))
         conn.commit() #puts change in database
         return ({"status message" : "Game scheduled successfully."})
     except Exception as e:
