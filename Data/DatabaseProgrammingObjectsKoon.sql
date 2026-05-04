@@ -212,6 +212,25 @@ BEGIN
     WHERE GameID = @GameID;
 END
 
+GO
+create or alter procedure procGetAllTeams
+as
+begin
+    select TeamID, TeamName
+    from Team
+end
+-- execute procGetAllTeams;
+
+go
+
+create or alter procedure procGetAllStadiums
+as
+begin
+    select StadiumID, StadiumName
+    from Stadium
+end
+-- execute procGetAllStadiums;
+
 /*GameRound: 'Wild Card', HomeTeamID: 22, AwayTeamID: 30, GameDate: '2026-01-10', GameStartTime: '16:30', StadiumID: 22, 
 NFLAdminID for scheduling: 5 (Bill Belichick)
 

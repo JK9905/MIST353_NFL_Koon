@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import pandas as pd
 
-FASTAPI_URL = "http://mist353-api-koon.azurewebsites.net"
+FASTAPI_URL = "https://mist353-api-koon.azurewebsites.net"
 #"http://localhost:8000" "http://mist353-api-koon.azurewebsites.net"
 
 def get_data(endpoint: str, input_params: dict, method: str = "GET"):

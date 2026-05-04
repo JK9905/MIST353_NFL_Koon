@@ -46,7 +46,6 @@ def schedule_game_ui():
         parameters["NFLAdminID"] = st.session_state.app_user_id
 
         response = post_data("schedule_game/", parameters)
-        st.write(response)
 
         if response is not None and "status message" in response:
             st.info(response["status message"])
