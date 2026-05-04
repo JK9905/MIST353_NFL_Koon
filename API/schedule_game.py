@@ -23,7 +23,7 @@ def schedule_game(
     except Exception as e:
         conn.rollback()
         if ("UNIQUE KEY constraint") in str(e):
-            return {"status_message": "Error: A game is already scheduled at this date and time."}
+            return {"status _message": "Error: A game is already scheduled at this date and time."}
         else:
             return {"status_message": f"Error scheduling game: {e}"}
     finally:

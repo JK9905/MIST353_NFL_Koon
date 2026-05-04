@@ -37,17 +37,18 @@ def schedule_game_ui():
         stadium_id = stadium_options[stadium_name]
 
         parameters = {}
-        parameters["HomeTeamID"] = home_team_id
-        parameters["AwayTeamID"] = away_team_id
-        parameters["StadiumID"] = stadium_id
-        parameters["GameRound"] = game_round
-        parameters["GameDate"] = game_date.isoformat()
-        parameters["GameStartTime"] = game_start_time.isoformat()
-        parameters["NFLAdminID"] = st.session_state.app_user_id
+        parameters["home_team_id"] = home_team_id
+        parameters["away_team_id"] = away_team_id
+        parameters["stadium_id"] = stadium_id
+        parameters["game_round"] = game_round
+        parameters["game_date"] = game_date.isoformat()
+        parameters["game_start_time"] = game_start_time.isoformat()
+        parameters["nfl_admin_id"] = st.session_state.app_user_id
 
+        st.write("Parameters:", parameters)
         response = post_data("schedule_game/", parameters)
 
-        if response is not None and "status message" in response:
-            st.info(response["status message"])
+        if response is not None and "status_message" in response:
+            st.info(response["status_message"])
         else:
             st.error("An error occured while scheduling the game. Please try again." )
